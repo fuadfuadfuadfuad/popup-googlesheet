@@ -1,0 +1,37 @@
+function onOpen() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Sheet1"); // Ganti dengan nama sheet yang ingin digunakan
+  var range = sheet.getDataRange();
+  var values = range.getValues();
+  var today = new Date();
+  
+  for (var row = 1; row < values.length; row++) {
+    var dueDate = new Date(values[row][0]); // Kolom 2 mengandung tanggal jatuh tempo, ganti angka 1 dengan nomor kolom yang sesuai
+    var diff = Math.floor((dueDate - today) / (1000 * 60 * 60 * 24)+1);
+    var cell = sheet.getRange(row + 1, 1); // Kolom 1 mengandung nilai yang ingin dipantau, ganti angka 1 dengan nomor kolom yang sesuai
+    var nextCell = sheet.getRange(row + 1, 2); // Kolom 2 mengandung nilai yang ingin ditampilkan di pesan popup, ganti angka 2 dengan nomor kolom yang sesuai
+    
+    if (diff < 0) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " sudah lewat jatuh tempo!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    } else if (diff == 0) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " jatuh tempo hari ini!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    }  else if (diff == 1) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " akan jatuh tempo besok!";
+      SpreadsheetApp.getUi().alert(message); 
+    } else if (diff == 7) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " akan jatuh tempo dalam seminggu!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    } else if (diff == 14) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " akan jatuh tempo dalam 2 minggu!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    } else if (diff == 21) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " akan jatuh tempo dalam 3 minggu!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    } else if (diff == 30) { 
+      var message = "PKS dengan Vendor " + nextCell.getValue() + " akan jatuh tempo dalam sebulan!"; 
+      SpreadsheetApp.getUi().alert(message); 
+    }
+  }
+}
